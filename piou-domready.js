@@ -1,7 +1,7 @@
 /**
  * Bibliotheque pour executer des fonctions lorsque le dom est chargé
  * @author hakurou
- * @version 1.0.0
+ * @version 1.0.1
  * @created 27/10/2012
  */
 (function(){
