@@ -10,15 +10,25 @@
 	if(typeof window.piou == "undefined")
 		window.piou = {};
 	
+	var isDomReady = false;
+	
 	/**
 	 * Fonction d'execution d'un callback en cas de dom chargé
 	 * @param callback			Fonction a executer
 	 */
 	var domReady = function(callback)
 	{
-		if(typeof document.addEventListener != "undefined")
+		if(isDomReady)
+			callback();
+		
+		if(typeof document.readyState != "undefined" &&
+			typeof document.addEventListener != "undefined" &&
+			!/loaded|complete/gi.test(document.readyState))
 		{
-			document.addEventListener("DOMContentLoaded", callback, false);
+			document.addEventListener("DOMContentLoaded", function(){
+				isDomReady = true; 
+				callback();
+			}, false);
 		}
 		else if(typeof document.readyState != "undefined")
 		{
@@ -27,6 +37,7 @@
 				{
 					callback();
 					clearInterval(timer);
+					isDomReady = true;
 				}
 			}, 10);
 		}
@@ -46,6 +57,7 @@
 						domReady.callbackList[callback];
 					}
 					
+					isDomReady = true;
 					domReady.callbackList = [];
 				}
 			};
